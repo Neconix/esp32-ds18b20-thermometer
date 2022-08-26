@@ -85,7 +85,7 @@ bool sensorGetTempSync(sensor_t *sensor, float *temp);
 bool sensorSetConfig(sensor_t *sensor, sensor_resolution_t resolution, uint8_t tempHigh, uint8_t tempLow);
 ```
 
-See [ds18c20.h](main/ds18c20.h) and [st7789.c](main/ds18c20.c)   
+See [ds18c20.h](main/ds18c20.h) and [ds18c20.c](main/ds18c20.c)   
 
 # Docs
 esp-idf: https://docs.espressif.com/projects/esp-idf/en/latest/esp32/
