@@ -1,4 +1,3 @@
-#include "driver/spi_master.h"
 #include "hal/gpio_types.h"
 
 #define CMD_READ_ROM         0x33

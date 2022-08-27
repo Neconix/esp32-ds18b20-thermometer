@@ -1,44 +1,13 @@
 #include <string.h>
 #include <math.h>
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 #include "driver/gpio.h"
+#include "esp_timer.h"
 #include "esp_log.h"
-#include "time.h"
 
 #include "ds18b20.h"
 
 #define TAG "DS18B20"
-
-void delayMS(float ms) {
-    //float _ms = ms + (portTICK_PERIOD_MS - 1);
-    TickType_t xTicksToDelay = ms / portTICK_PERIOD_MS;
-    ESP_LOGI(TAG, "ms=%d", xTicksToDelay);
-    vTaskDelay(xTicksToDelay);
-}
-
-#define NOP() asm volatile ("nop")
-
-unsigned long IRAM_ATTR micros()
-{
-    return (unsigned long) (esp_timer_get_time());
-}
-void IRAM_ATTR delayMicroseconds(uint32_t us)
-{
-    uint32_t m = micros();
-    if(us){
-        uint32_t e = (m + us);
-        if(m > e){ //overflow
-            while(micros() > e){
-                NOP();
-            }
-        }
-        while(micros() < e){
-            NOP();
-        }
-    }
-}
 
 static void sensorWriteBit(sensor_t *sensor, bool bit)
 {
@@ -320,8 +289,6 @@ bool sensorGetTempSync(sensor_t *sensor, float *temp)
     }
 
     integerT = (scratchpad.temp2 << 4) | (scratchpad.temp1 >> 4);
-
-    integerT = -integerT;
 
     floatT  = ((scratchpad.temp1 >> 3) & 0x1) * 0.5;
     floatT += ((scratchpad.temp1 >> 2) & 0x1) * 0.25;
